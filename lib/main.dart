@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
-import 'screens/auth_screen.dart';
+import 'screens/splash_screen.dart'; // Import SplashScreen
+import 'screens/auth_screen.dart'; // Import AuthScreen
+import 'screens/home_screen.dart'; // Import HomeScreen jika diperlukan nanti
 
 void main() {
   runApp(MyApp());
@@ -13,9 +14,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Bobusku',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.teal, // Tema aplikasi
       ),
-      home: SplashScreen(), // Ganti dengan SplashScreen sebagai halaman pertama
+      home: SplashScreen(), // Tetapkan SplashScreen sebagai halaman pertama
     );
   }
 }

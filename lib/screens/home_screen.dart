@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'bus_search_results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -121,6 +122,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime? selectedDate;
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -220,6 +223,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             children: [
                               TextField(
+                                controller: fromController,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(HugeIcons.strokeRoundedBus01,
                                       color: Color(0xFF003566)),
@@ -234,6 +238,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(height: 16),
                               TextField(
+                                controller: toController,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(HugeIcons.strokeRoundedBus01,
                                       color: Color(0xFF003566)),
@@ -272,7 +277,32 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(height: 20),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (fromController.text.isNotEmpty &&
+                                      toController.text.isNotEmpty &&
+                                      selectedDate != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BusSearchResultsScreen(
+                                          fromCity: fromController.text,
+                                          toCity: toController.text,
+                                          selectedDate:
+                                              DateFormat('dd MMM yyyy')
+                                                  .format(selectedDate!),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content:
+                                            Text('Please complete all fields'),
+                                      ),
+                                    );
+                                  }
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       Color.fromARGB(255, 9, 134, 237),
