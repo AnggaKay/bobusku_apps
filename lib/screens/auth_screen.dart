@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'home_screen.dart';
+import 'sign_up_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -55,56 +56,72 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildHeader(),
-                _buildUsernameField(),
-                _buildPasswordField(),
-                _buildForgotPasswordButton(),
-                SizedBox(height: 20),
-                _isLoading ? CircularProgressIndicator() : _buildLoginButton(),
-              ],
+      body: Stack(
+        children: [
+          _buildBackground(),
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildHeader(),
+                    _buildUsernameField(),
+                    _buildPasswordField(),
+                    _buildForgotPasswordButton(),
+                    SizedBox(height: 20),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : _buildLoginButton(),
+                    SizedBox(height: 15),
+                    _buildSignUpText(context),
+                  ],
+                ),
+              ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackground() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF003566), Color(0xFF4A90E2)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
       ),
     );
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 40),
-      child: Column(
-        children: [
-          Image.asset('assets/images/bus.png', height: 200, width: 200),
-          SizedBox(height: 20),
-          Text(
-            'Enter your information',
-            style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF002244),
-            ),
+    return Column(
+      children: [
+        Image.asset('assets/images/bus.png', height: 200, width: 200),
+        SizedBox(height: 18),
+        Text(
+          'Welcome Back!',
+          style: GoogleFonts.poppins(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          SizedBox(height: 15),
-          Text(
-            'Fill up your personal information for seamless experience in bobusku',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: Colors.grey,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Please login to continue',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: Colors.white70,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -113,7 +130,7 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _usernameController,
       labelText: 'Username',
       icon: HugeIcons.strokeRoundedUser,
-      iconColor: Color(0xFF002244),
+      iconColor: Colors.white,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Username tidak boleh kosong';
@@ -128,7 +145,7 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _passwordController,
       labelText: 'Password',
       icon: HugeIcons.strokeRoundedLockPassword,
-      iconColor: Color(0xFF002244),
+      iconColor: Colors.white,
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -155,10 +172,17 @@ class _AuthScreenState extends State<AuthScreen> {
           controller: controller,
           obscureText: obscureText,
           validator: validator,
+          style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             labelText: labelText,
+            labelStyle: TextStyle(color: Colors.white70),
             prefixIcon: Icon(icon, color: iconColor),
-            border: OutlineInputBorder(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white70),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
               borderRadius: BorderRadius.circular(30),
             ),
           ),
@@ -172,11 +196,11 @@ class _AuthScreenState extends State<AuthScreen> {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () {
-          // Aksi untuk lupa kata sandi
+          // Add forgot password action
         },
         child: Text(
-          'Lupa Kata Sandi',
-          style: TextStyle(color: Colors.red),
+          'Forgot Password?',
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -186,14 +210,39 @@ class _AuthScreenState extends State<AuthScreen> {
     return ElevatedButton(
       onPressed: _login,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF002244),
-        padding: EdgeInsets.symmetric(horizontal: 130),
-        textStyle: TextStyle(fontSize: 16),
+        overlayColor: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 130, vertical: 16),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
-      child: Text('Masuk', style: TextStyle(color: Colors.white)),
+      child: Text(
+        'Login',
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF003566),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpText(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignUpScreen()),
+        );
+      },
+      child: Text(
+        'Don’t have an account? Sign Up',
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
     );
   }
 }

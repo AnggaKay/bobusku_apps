@@ -18,262 +18,290 @@ class BusSearchResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF002244),
-        elevation: 0,
-        toolbarHeight: 100,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  fromCity.toUpperCase(),
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Icon(HugeIcons.strokeRoundedArrowLeftRight,
-                    color: Colors.white, size: 22),
-                Text(
-                  toCity.toUpperCase(),
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  selectedDate,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: Colors.white70,
-                  ),
-                ),
-                Icon(Icons.refresh, color: Colors.white70, size: 22),
-              ],
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: Color(0xFFF4F7FA),
+      appBar: _buildAppBar(context),
       body: Column(
         children: [
-          Container(
-            color: Color(0xFFF5F5F5),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Available Buses",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF003566),
-                  ),
+          _buildHeader(),
+          Expanded(child: _buildBusList(context)),
+        ],
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      toolbarHeight: 80,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Color(0xFF1C3FAA)),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      title: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                fromCity.toUpperCase(),
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1C3FAA),
                 ),
-                Icon(HugeIcons.strokeRoundedFilter, color: Color(0xFF003566))
-              ],
-            ),
+              ),
+              SizedBox(width: 8),
+              Icon(HugeIcons.strokeRoundedArrowLeftRight,
+                  color: Color(0xFF1C3FAA), size: 22),
+              SizedBox(width: 8),
+              Text(
+                toCity.toUpperCase(),
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1C3FAA),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BusDetailScreen(
-                          busName:
-                              index % 2 == 0 ? 'Harapan Jaya' : 'PO Sinar Jaya',
-                          departureTime: '06:00 AM',
-                          arrivalTime: '02:30 PM',
-                          fromCity: fromCity,
-                          toCity: toCity,
-                          price: index % 2 == 0 ? 250000 : 300000,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      index % 2 == 0
-                                          ? 'Harapan Jaya'
-                                          : 'PO Sinar Jaya',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF003566),
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      index % 2 == 0
-                                          ? 'Executive Class (2+2)'
-                                          : 'VIP Class (2+1)',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: index % 2 == 0
-                                      ? Colors.green
-                                      : Colors.blue,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  index % 2 == 0 ? 'CHEAPEST' : 'FASTEST',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 12),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '06:00 AM',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      'Jakarta - Pulo Gebang',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(HugeIcons.strokeRoundedBus01,
-                                      color: Color(0xFF003566), size: 30),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    '8h 30m',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Divider(color: Colors.grey[300]),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(HugeIcons.strokeRoundedStar,
-                                      color: Colors.amber, size: 20),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '4.5',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Icon(HugeIcons.strokeRoundedUserMultiple,
-                                      color: Colors.red, size: 20),
-                                  SizedBox(width: 3),
-                                  Text(
-                                    '45',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                NumberFormat.currency(
-                                        locale: 'id', symbol: 'Rp ')
-                                    .format(index % 2 == 0 ? 250000 : 300000),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003566),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+          SizedBox(height: 5),
+          Text(
+            selectedDate,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey[600],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF1C3FAA), Color(0xFF4F8FF7)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Available Buses",
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          Icon(HugeIcons.strokeRoundedFilter, color: Colors.white),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBusList(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      itemBuilder: (context, index) {
+        return _buildBusCard(context, index);
+      },
+    );
+  }
+
+  Widget _buildBusCard(BuildContext context, int index) {
+    final busName = index % 2 == 0 ? 'Harapan Jaya' : 'PO Sinar Jaya';
+    final busClass =
+        index % 2 == 0 ? 'Executive Class (2+2)' : 'VIP Class (2+1)';
+    final price = index % 2 == 0 ? 250000 : 300000;
+    final tag = index % 2 == 0 ? 'CHEAPEST' : 'FASTEST';
+    final tagColor = index % 2 == 0 ? Colors.green : Colors.blue;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BusDetailScreen(
+              busName: busName,
+              departureTime: '06:00 AM',
+              arrivalTime: '02:30 PM',
+              fromCity: fromCity,
+              toCity: toCity,
+              price: price,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildBusInfo(busName, busClass, tag, tagColor),
+            SizedBox(height: 12),
+            _buildBusSchedule(),
+            Divider(color: Colors.grey[300]),
+            _buildBusFooter(price),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBusInfo(
+      String busName, String busClass, String tag, Color tagColor) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              busName,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1C3FAA),
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              busClass,
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: tagColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            tag,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBusSchedule() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '06:00 AM',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Jakarta - Pulo Gebang',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(HugeIcons.strokeRoundedBus01,
+                  color: Color(0xFF1C3FAA), size: 30),
+              SizedBox(height: 4),
+              Text(
+                '8h 30m',
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBusFooter(int price) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Icon(HugeIcons.strokeRoundedStar, color: Colors.amber, size: 20),
+            SizedBox(width: 4),
+            Text(
+              '4.5',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            SizedBox(width: 12),
+            Icon(HugeIcons.strokeRoundedUserMultiple,
+                color: Colors.red, size: 20),
+            SizedBox(width: 4),
+            Text(
+              '45',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        Text(
+          NumberFormat.currency(locale: 'id', symbol: 'Rp ').format(price),
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1C3FAA),
+          ),
+        ),
+      ],
     );
   }
 }

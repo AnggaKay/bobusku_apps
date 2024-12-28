@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'passenger_details_screen.dart';
 
 class BusDetailScreen extends StatelessWidget {
   final String busName;
@@ -21,203 +22,281 @@ class BusDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF002244),
-        elevation: 0,
-        toolbarHeight: 80,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+      backgroundColor: Color(0xFFFAFAFA),
+      appBar: _buildAppBar(context),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildBusDetails(),
+          _buildSeatLegend(),
+          Expanded(child: _buildSeatLayout()),
+          _buildBottomBar(context),
+        ],
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Color(0xFF1C3FAA)),
+        onPressed: () => Navigator.pop(context),
+      ),
+      title: Text(
+        busName,
+        style: GoogleFonts.poppins(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF1C3FAA),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              busName,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+      ),
+    );
+  }
+
+  Widget _buildBusDetails() {
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [Color(0xFF1C3FAA), Color(0xFF4F8FF7)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 12,
+            offset: Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$departureTime - $arrivalTime | 4h 25m',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-            SizedBox(height: 4),
-            Text(
-              '$departureTime - $arrivalTime',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.white70,
+          ),
+          SizedBox(height: 8),
+          Text(
+            '$fromCity to $toCity',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.white70,
+            ),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildFacilityIcon(Icons.ac_unit, 'AC'),
+              _buildFacilityIcon(Icons.wifi, 'WiFi'),
+              _buildFacilityIcon(Icons.chair, 'Recliner'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFacilityIcon(IconData icon, String label) {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.9),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: Offset(0, 4),
               ),
+            ],
+          ),
+          child: Icon(icon, color: Color(0xFF1C3FAA), size: 24),
+        ),
+        SizedBox(height: 8),
+        Text(
+          label,
+          style: GoogleFonts.poppins(fontSize: 12, color: Colors.white70),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSeatLegend() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildLegend('Booked', Colors.red.shade400),
+          _buildLegend('Available', Colors.green.shade400),
+          _buildLegend('Female', Colors.pink.shade400),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegend(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 15,
+          height: 15,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        SizedBox(width: 8),
+        Text(
+          label,
+          style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSeatLayout() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '$fromCity to $toCity',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Price: \u00a3$price',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '4.5',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Icon(Icons.star, color: Colors.amber, size: 24),
-                  ],
-                ),
-              ],
-            ),
+        child: GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // Tiga kolom kursi
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FilterChip(
-                  label:
-                      Text('Booked', style: GoogleFonts.poppins(fontSize: 14)),
-                  backgroundColor: Colors.red.shade100,
-                  onSelected: (_) {},
-                ),
-                SizedBox(width: 10),
-                FilterChip(
-                  label: Text('Available',
-                      style: GoogleFonts.poppins(fontSize: 14)),
-                  backgroundColor: Colors.green.shade100,
-                  onSelected: (_) {},
-                ),
-                SizedBox(width: 10),
-                FilterChip(
-                  label:
-                      Text('Female', style: GoogleFonts.poppins(fontSize: 14)),
-                  backgroundColor: Colors.pink.shade100,
-                  onSelected: (_) {},
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    'Choose Your Seat',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF003566),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: 24,
-                    itemBuilder: (context, index) {
-                      final isBooked = index % 8 == 0;
-                      final isFemale = index % 5 == 0 && !isBooked;
-                      return GestureDetector(
-                        onTap: () {
-                          // Handle Seat Selection
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isBooked
-                                ? Colors.red.shade200
-                                : isFemale
-                                    ? Colors.pink.shade200
-                                    : Colors.green.shade200,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      );
+          itemCount: 18, // Total kursi di Lower Deck
+          itemBuilder: (context, index) {
+            final isBooked = index % 7 == 0; // Kursi ke-7 ter-booking
+            final isFemale = index % 5 == 0 && !isBooked; // Kursi khusus wanita
+
+            return GestureDetector(
+              onTap: isBooked
+                  ? null
+                  : () {
+                      // Highlight kursi terpilih
                     },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sleeper, Seater',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    Text(
-                      'S8, W11',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: isBooked
+                      ? Colors.red.shade400
+                      : isFemale
+                          ? Colors.pink.shade400
+                          : Colors.green.shade400,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Confirm Seat Logic
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF003566),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                child: Center(
                   child: Text(
-                    'Confirm',
+                    'S${index + 1}',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sleeper, Seater',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+              Text(
+                'S8, W11',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Navigasi ke PassengerDetailsScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PassengerDetailsScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1C3FAA),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: Text(
+              'Confirm',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
