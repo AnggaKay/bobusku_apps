@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "493720952129",
+    "project_id": "bobusku-app",
+    "storage_bucket": "bobusku-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493720952129:android:3102b91f19d5f3390115c0",
+        "android_client_info": {
+          "package_name": "com.example.bobusku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVYxdYVr2Eh6GIC29z7WYg282XpkbTRjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

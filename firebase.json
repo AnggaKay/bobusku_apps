@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"bobusku-app","appId":"1:493720952129:android:3102b91f19d5f3390115c0","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"bobusku-app","configurations":{"android":"1:493720952129:android:3102b91f19d5f3390115c0","ios":"1:493720952129:ios:3c9c915841db27050115c0"}}}}}}

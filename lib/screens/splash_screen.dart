@@ -9,7 +9,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   static const int splashDuration = 5; // Duration for splash screen in seconds
-  static const Color backgroundColor = Color(0xFF1E90FF); // Background color
+  static const Color backgroundColor = Color(0xFF002244); // Background color
   static const String logoPath = 'assets/images/bus.png'; // Path to logo image
 
   @override

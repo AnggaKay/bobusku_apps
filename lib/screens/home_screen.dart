@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? Color.fromARGB(255, 9, 134, 237).withOpacity(0.1)
+              ? Color(0xFF002244).withOpacity(0.2)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 9, 134, 237),
+                color: Color(0xFF002244),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30.0),
                   bottomRight: Radius.circular(30.0),
@@ -304,8 +304,7 @@ class _HomePageState extends State<HomePage> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 9, 134, 237),
+                                  backgroundColor: Color(0xFF002244),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
@@ -331,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Popular Routes',
                         style: GoogleFonts.poppins(
-                          color: Color.fromARGB(255, 9, 134, 237),
+                          color: Color(0xFF002244),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -412,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Recent Searches',
                         style: GoogleFonts.poppins(
-                          color: Color.fromARGB(255, 9, 134, 237),
+                          color: Color(0xFF002244),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

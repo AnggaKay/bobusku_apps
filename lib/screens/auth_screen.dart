@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -11,6 +12,45 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('user')
+          .where('username', isEqualTo: _usernameController.text)
+          .where('password', isEqualTo: _passwordController.text)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        _showSnackBar('Username atau Password salah');
+      }
+    } catch (e) {
+      _showSnackBar('Terjadi kesalahan: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +58,20 @@ class _AuthScreenState extends State<AuthScreen> {
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildHeader(),
-              _buildUsernameField(),
-              _buildPasswordField(),
-              _buildForgotPasswordButton(),
-              SizedBox(height: 20),
-              _buildLoginButton(context),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                _buildUsernameField(),
+                _buildPasswordField(),
+                _buildForgotPasswordButton(),
+                SizedBox(height: 20),
+                _isLoading ? CircularProgressIndicator() : _buildLoginButton(),
+              ],
+            ),
           ),
         ),
       ),
@@ -47,7 +90,7 @@ class _AuthScreenState extends State<AuthScreen> {
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 0, 111, 214),
+              color: Color(0xFF002244),
             ),
           ),
           SizedBox(height: 15),
@@ -70,7 +113,13 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _usernameController,
       labelText: 'Username',
       icon: HugeIcons.strokeRoundedUser,
-      iconColor: Color.fromARGB(255, 0, 79, 154),
+      iconColor: Color(0xFF002244),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Username tidak boleh kosong';
+        }
+        return null;
+      },
     );
   }
 
@@ -79,8 +128,14 @@ class _AuthScreenState extends State<AuthScreen> {
       controller: _passwordController,
       labelText: 'Password',
       icon: HugeIcons.strokeRoundedLockPassword,
-      iconColor: Color.fromARGB(255, 0, 97, 188),
+      iconColor: Color(0xFF002244),
       obscureText: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Password tidak boleh kosong';
+        }
+        return null;
+      },
     );
   }
 
@@ -90,14 +145,16 @@ class _AuthScreenState extends State<AuthScreen> {
     required IconData icon,
     required Color iconColor,
     bool obscureText = false,
+    String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
         width: 320,
-        child: TextField(
+        child: TextFormField(
           controller: controller,
           obscureText: obscureText,
+          validator: validator,
           decoration: InputDecoration(
             labelText: labelText,
             prefixIcon: Icon(icon, color: iconColor),
@@ -125,16 +182,11 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildLoginButton() {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
-      },
+      onPressed: _login,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(210, 0, 154, 250),
+        backgroundColor: Color(0xFF002244),
         padding: EdgeInsets.symmetric(horizontal: 130),
         textStyle: TextStyle(fontSize: 16),
         shape: RoundedRectangleBorder(
