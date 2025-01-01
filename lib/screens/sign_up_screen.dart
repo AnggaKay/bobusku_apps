@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_screen.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -100,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _buildTextField(
       controller: _usernameController,
       labelText: 'Username',
-      icon: Icons.person_outline,
+      icon: HugeIcons.strokeRoundedUser,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Username tidak boleh kosong';
@@ -114,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _buildTextField(
       controller: _passwordController,
       labelText: 'Password',
-      icon: Icons.lock_outline,
+      icon: HugeIcons.strokeRoundedLockPassword,
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -131,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _buildTextField(
       controller: _confirmPasswordController,
       labelText: 'Confirm Password',
-      icon: Icons.lock_outline,
+      icon: HugeIcons.strokeRoundedLockPassword,
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {

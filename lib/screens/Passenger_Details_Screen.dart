@@ -6,18 +6,47 @@ class PassengerDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF4F7FA),
-      appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildBoardingDetails(),
-            SizedBox(height: 16),
-            _buildPassengerDetails(),
-            SizedBox(height: 16),
-            _buildContactDetails(),
+      backgroundColor: Color(0xFFF7F8FA),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: Color(0xFFF7F8FA),
+              elevation: 0,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Color(0xFF1C3FAA)),
+                onPressed: () => Navigator.pop(context),
+              ),
+              centerTitle: true,
+              title: Text(
+                'Detail Pemesanan',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1C3FAA),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    SizedBox(height: 25),
+                    _buildSectionTitle('Poin Naik dan Turun'),
+                    _buildBoardingDetails(),
+                    SizedBox(height: 20),
+                    _buildSectionTitle('Informasi Penumpang'),
+                    _buildPassengerDetails(),
+                    SizedBox(height: 20),
+                    _buildSectionTitle('Kontak Penumpang'),
+                    _buildContactDetails(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -25,79 +54,68 @@ class PassengerDetailsScreen extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: Color(0xFF003566),
-      elevation: 0,
-      centerTitle: true,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.pop(context),
-      ),
-      title: Text(
-        'Detail Penumpang',
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Text(
+        title,
         style: GoogleFonts.poppins(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: Color(0xFF0056D2),
         ),
       ),
     );
   }
 
   Widget _buildBoardingDetails() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Poin Naik dan Turun:',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF003566),
-              ),
-            ),
-            SizedBox(height: 12),
-            _buildBoardingPoint(
-              icon: Icons.directions_bus,
-              label: 'Chennai CMBT @ 5:50AM',
-            ),
-            SizedBox(height: 8),
-            _buildBoardingPoint(
-              icon: Icons.directions_bus,
-              label: 'Bengaluru BS @ 11:15AM',
-            ),
-            SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle change logic
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  side: BorderSide(color: Color(0xFF003566)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildBoardingPoint(
+            icon: Icons.location_on_outlined,
+            label: 'Bandar Lampung Terminal - 06:00 AM',
+          ),
+          SizedBox(height: 10),
+          Divider(),
+          SizedBox(height: 10),
+          _buildBoardingPoint(
+            icon: Icons.location_on,
+            label: 'Jakarta Terminal Bus - 09:15 AM',
+          ),
+          SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: Color(0xFF0056D2)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  'Ubah',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: Color(0xFF003566),
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              child: Text(
+                'Ubah Lokasi',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Color(0xFF0056D2),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -105,13 +123,15 @@ class PassengerDetailsScreen extends StatelessWidget {
   Widget _buildBoardingPoint({required IconData icon, required String label}) {
     return Row(
       children: [
-        Icon(icon, color: Color(0xFF003566), size: 24),
-        SizedBox(width: 12),
+        Icon(icon, color: Color(0xFF0056D2), size: 28),
+        SizedBox(width: 16),
         Expanded(
           child: Text(
             label,
-            style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
-            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
           ),
         ),
       ],
@@ -119,127 +139,68 @@ class PassengerDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildPassengerDetails() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Detail Penumpang:',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF003566),
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildTextField(label: 'Nama Penumpang', hintText: 'Masukkan Nama'),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(label: 'Usia', hintText: 'Contoh: 30'),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: _buildDropdownField(
+                  label: 'Jenis Kelamin',
+                  items: ['Pria', 'Wanita'],
                 ),
-                TextButton(
-                  onPressed: () {
-                    // Add passenger logic
-                  },
-                  child: Text(
-                    '+ Tambah Penumpang',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Color(0xFF003566),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12),
-            _buildTextField(label: 'Nama', hintText: 'Masukkan Nama'),
-            SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: _buildTextField(
-                    label: 'Usia',
-                    hintText: 'Contoh: 29',
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  flex: 3,
-                  child: _buildGenderSelection(),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildContactDetails() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Detail Kontak:',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF003566),
-              ),
-            ),
-            SizedBox(height: 12),
-            _buildTextField(
-              label: 'Email',
-              hintText: 'Masukkan Email',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            SizedBox(height: 16),
-            _buildTextField(
-              label: 'Nomor Telepon',
-              hintText: 'Masukkan Nomor Telepon',
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Checkbox(
-                  value: true,
-                  onChanged: (value) {
-                    // Handle checkbox change
-                  },
-                  activeColor: Color(0xFF003566),
-                ),
-                Expanded(
-                  child: Text(
-                    'Kirimkan detail perjalanan ke email saya',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildTextField(label: 'Email', hintText: 'Masukkan Email Anda'),
+          SizedBox(height: 16),
+          _buildTextField(
+              label: 'Nomor Telepon', hintText: 'Masukkan Nomor Telepon'),
+        ],
       ),
     );
   }
 
-  Widget _buildTextField({
-    required String label,
-    required String hintText,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
+  Widget _buildTextField({required String label, required String hintText}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -247,16 +208,16 @@ class PassengerDetailsScreen extends StatelessWidget {
           label,
           style: GoogleFonts.poppins(
             fontSize: 14,
+            fontWeight: FontWeight.w500,
             color: Colors.grey[700],
           ),
         ),
         SizedBox(height: 8),
         TextField(
-          keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
-            fillColor: Colors.grey[200],
+            fillColor: Color(0xFFF5F6F8),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -267,94 +228,84 @@ class PassengerDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGenderSelection() {
+  Widget _buildDropdownField({
+    required String label,
+    required List<String> items,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Jenis Kelamin',
+          label,
           style: GoogleFonts.poppins(
             fontSize: 14,
+            fontWeight: FontWeight.w500,
             color: Colors.grey[700],
           ),
         ),
-        Row(
-          children: [
-            Expanded(
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  'Pria',
-                  style: GoogleFonts.poppins(fontSize: 14),
-                ),
-                leading: Radio(
-                  value: 'Pria',
-                  groupValue: 'Pria',
-                  onChanged: (value) {
-                    // Handle gender selection
-                  },
-                  activeColor: Color(0xFF003566),
-                ),
-              ),
+        SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Color(0xFFF5F6F8),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
             ),
-            Expanded(
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  'Wanita',
-                  style: GoogleFonts.poppins(fontSize: 14),
-                ),
-                leading: Radio(
-                  value: 'Wanita',
-                  groupValue: 'Pria',
-                  onChanged: (value) {
-                    // Handle gender selection
-                  },
-                  activeColor: Color(0xFF003566),
-                ),
-              ),
-            ),
-          ],
+          ),
+          items: items
+              .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(item),
+                  ))
+              .toList(),
+          onChanged: (value) {},
         ),
       ],
     );
   }
 
   Widget _buildBottomBar() {
-    final NumberFormat currencyFormat = NumberFormat.currency(
-      locale: 'id',
-      symbol: 'Rp ',
+    final currencyFormat = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp',
+      decimalDigits: 0,
     );
-
-    final int totalPrice = 86000; // Total harga dinamis
 
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            currencyFormat.format(totalPrice),
+            currencyFormat.format(250000),
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.black87,
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              // Handle payment confirmation
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF003566),
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+              backgroundColor: Color(0xFF1C3FAA),
+              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
             child: Text(
-              'Lanjutkan ke Pembayaran',
+              'Lanjutkan',
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -118,11 +118,11 @@ class BusSearchResultsScreen extends StatelessWidget {
   }
 
   Widget _buildBusCard(BuildContext context, int index) {
-    final busName = index % 2 == 0 ? 'Harapan Jaya' : 'PO Sinar Jaya';
+    final busName = index % 2 == 0 ? 'PT Azril' : 'PO Mas Andre';
     final busClass =
         index % 2 == 0 ? 'Executive Class (2+2)' : 'VIP Class (2+1)';
     final price = index % 2 == 0 ? 250000 : 300000;
-    final tag = index % 2 == 0 ? 'CHEAPEST' : 'FASTEST';
+    final tag = index % 2 == 0 ? 'TERMURAH' : 'TERCEPAT';
     final tagColor = index % 2 == 0 ? Colors.green : Colors.blue;
 
     return GestureDetector(
@@ -232,7 +232,7 @@ class BusSearchResultsScreen extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                'Jakarta - Pulo Gebang',
+                'Lampung - Jakarta',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: Colors.grey[600],
@@ -250,7 +250,7 @@ class BusSearchResultsScreen extends StatelessWidget {
                   color: Color(0xFF1C3FAA), size: 30),
               SizedBox(height: 4),
               Text(
-                '8h 30m',
+                '3h 30m',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: Colors.grey[600],

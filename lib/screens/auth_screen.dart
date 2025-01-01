@@ -240,7 +240,7 @@ class _AuthScreenState extends State<AuthScreen> {
         style: GoogleFonts.poppins(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 14,
+          fontSize: 12,
         ),
       ),
     );

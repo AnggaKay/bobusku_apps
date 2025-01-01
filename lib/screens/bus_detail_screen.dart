@@ -79,7 +79,7 @@ class BusDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '$departureTime - $arrivalTime | 4h 25m',
+            '$departureTime - $arrivalTime | 3h 30m',
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.bold,
